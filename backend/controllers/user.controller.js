@@ -1,15 +1,25 @@
 const User = require("../models/user.model");
 const jwt = require("jsonwebtoken");
+const z = require("zod");
+const bcrypt = require("bcrypt");
+
+const signUpSchema = z.object({
+    username: z.string().min(2),
+    mobileNo: z.string().length(10),
+    email: z.string().email(),
+    password: z.string().min(3),
+})
 
 exports.signUp = async(req, res) => {
     try {
-        const {username, email, password, firstName, lastName} = req.body;
-        if(!username || !email || !password || !firstName || !lastName) {
-            return res.status(404).json({
+        const {success} = signUpSchema.safeParse(req.body);
+        if(!success) {
+            return res.status(400).json({
                 success: false,
-                message: "Please fill all the Fields"
+                message: "Incorrect Input",
             })
         }
+        const {username, mobileNo, email, password} = req.body;
         const user = await User.findOne({username});
         if(user) {
             return res.status(400).json({
@@ -17,18 +27,21 @@ exports.signUp = async(req, res) => {
                 message: "User with this username already Exists",
             })
         }
-        const hashedPass = jwt.sign(password, process.env.JWT_SECRET);
+        const hashedPass = await bcrypt.hash(password, 10);
         const newUser = new User({
             username, 
+            mobileNo,
             email, 
             password: hashedPass, 
-            firstName, 
-            lastName
         })
+        // const token = jwt.sign({
+        //     userID: newUser._id,
+        // }, process.env.JWT_SECRET);
         newUser.save();
         return res.status(201).json({
             success: true,
             message: "User Registered Successfully",
+            // token,
             data: newUser,
         })
     } catch(err) {
@@ -37,5 +50,43 @@ exports.signUp = async(req, res) => {
             success: false,
             message: err.message,
         })
+    }
+}
+
+exports.logIn = async (req, res) => {
+    try {
+        const {success} = signUpSchema.pick({username: true, password: true}).safeParse(req.body);
+        if(!success) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid Inputs",
+            })
+        }
+        const {username, password} = req.body;
+        const user = await User.findOne({username});
+        if(!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User Don't Exists",
+            })
+        }
+        const isPasswordCorrect = await bcrypt.compare(password, user.password);
+        if(!isPasswordCorrect) {
+            return res.status(403).json({
+                success: false,
+                message: "Incorrect Password",
+            })
+        }
+        const token = jwt.sign({
+            userID: user._id,
+        }, process.env.JWT_SECRET);
+        user.token = token;
+        return res.header("Authorization", "Bearer "+token).status(200).json({
+            success: true,
+            message: "User Logged In",
+            token,
+        })
+    } catch(err) {
+
     }
 }

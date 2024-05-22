@@ -6,13 +6,14 @@ const mainRouter = require("./routes/index");
 const cors = require("cors");
 require("dotenv").config();
 
+app.use(cors());
+app.use(express.json());
+
 dbConnect();
 app.get("/", (req, res) => {
     res.json("Server is Up and Running");
 })
 
-app.use(cors());
-app.use(express.json());
 app.use("/api", mainRouter);
 
 app.listen(PORT, () => {
