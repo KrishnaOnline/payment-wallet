@@ -4,13 +4,13 @@ const z = require("zod");
 const bcrypt = require("bcrypt");
 
 const signUpSchema = z.object({
-    username: z.string().min(2),
+    username: z.string().min(2).refine(u => !u.includes(" "), "No Spaces in Username"),
     mobileNo: z.string().length(10),
     email: z.string().email(),
     password: z.string().min(3),
 })
 
-exports.signUp = async(req, res) => {
+exports.signUp = async (req, res) => {
     try {
         const {success} = signUpSchema.safeParse(req.body);
         if(!success) {
@@ -19,7 +19,7 @@ exports.signUp = async(req, res) => {
                 message: "Incorrect Input",
             })
         }
-        const {username, mobileNo, email, password} = req.body;
+        const {name, username, mobileNo, email, password} = req.body;
         const user = await User.findOne({username});
         if(user) {
             return res.status(400).json({
@@ -29,6 +29,7 @@ exports.signUp = async(req, res) => {
         }
         const hashedPass = await bcrypt.hash(password, 10);
         const newUser = new User({
+            name, 
             username, 
             mobileNo,
             email, 
@@ -87,6 +88,37 @@ exports.logIn = async (req, res) => {
             token,
         })
     } catch(err) {
+        return res.status(500).json({
+            success: false,
+            message: err.message,
+        })
+    }
+}
 
+exports.getBySearch = async (req, res) => {
+    try {
+        const filter = req.query.filter || "";
+        const users = await User.find({
+            $or: [{
+                name: {$regex: filter}
+            }, {
+                mobileNo: {$regex: filter}
+            }]
+        })
+        res.status(200).json({
+            success: true,
+            message: "Users By Search",
+            users: users.map(user => ({
+                name: user.name,
+                username: user.username,
+                mobileNo: user.mobileNo,
+                _id: user._id,
+            }))
+        })
+    } catch(err) {
+        return res.status(500).json({
+            success: false,
+            message: err.message,
+        })
     }
 }
