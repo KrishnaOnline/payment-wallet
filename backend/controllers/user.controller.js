@@ -1,7 +1,8 @@
 const User = require("../models/user.model");
+const Account = require("../models/account.model");
 const jwt = require("jsonwebtoken");
 const z = require("zod");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 
 const signUpSchema = z.object({
     username: z.string().min(2).refine(u => !u.includes(" "), "No Spaces in Username"),
@@ -38,12 +39,22 @@ exports.signUp = async (req, res) => {
         // const token = jwt.sign({
         //     userID: newUser._id,
         // }, process.env.JWT_SECRET);
+        const account = await Account.create({
+            user: newUser._id,
+            balance: 1500,
+        })
+        newUser.account = account._id;
         newUser.save();
+        const userData = await User.findById(newUser._id)
+            .populate({
+                path: 'account',
+                select: 'balance',
+            });
         return res.status(201).json({
             success: true,
             message: "User Registered Successfully",
             // token,
-            data: newUser,
+            // data: userData,
         })
     } catch(err) {
         console.log(err);
@@ -82,12 +93,19 @@ exports.logIn = async (req, res) => {
             userID: user._id,
         }, process.env.JWT_SECRET);
         user.token = token;
+        const userData = await User.findById(user._id)
+            .populate({
+                path: 'account',
+                select: 'balance',
+            });
         return res.header("Authorization", "Bearer "+token).status(200).json({
             success: true,
             message: "User Logged In",
             token,
+            data: userData,
         })
     } catch(err) {
+        console.log(err);
         return res.status(500).json({
             success: false,
             message: err.message,
@@ -116,6 +134,25 @@ exports.getBySearch = async (req, res) => {
             }))
         })
     } catch(err) {
+        console.log(err);
+        return res.status(500).json({
+            success: false,
+            message: err.message,
+        })
+    }
+}
+
+exports.getBalance = async (req, res) => {
+    try {
+        const account = await Account.findById(req.userID);
+        console.log(account);
+        res.status(200).json({
+            success: true,
+            message: "Fetched Balance",
+            balance: account.balance,
+        })
+    } catch(err) {
+        console.log(err);
         return res.status(500).json({
             success: false,
             message: err.message,

@@ -11,7 +11,7 @@ app.use(express.json());
 
 dbConnect();
 app.get("/", (req, res) => {
-    res.json("Server is Up and Running");
+    res.send(`Server is Up and Running...`);
 })
 
 app.use("/api", mainRouter);

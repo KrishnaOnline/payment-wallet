@@ -1,17 +1,17 @@
 const mongoose = require("mongoose");
 
-const bankAccountSchema = new mongoose.Schema({
-    userID: {
+const walletAccountSchema = new mongoose.Schema({
+    user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
         required: true,
     },
     balance: {
         type: Number,
-        default: 1000,
+        // default: 1000,
         required: true,
     }
 })
 
-const Account = mongoose.model("Account", bankAccountSchema);
+const Account = mongoose.model("Account", walletAccountSchema);
 module.exports = Account;
