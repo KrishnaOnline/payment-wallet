@@ -13,8 +13,7 @@ app.get("/", (req, res) => {
 
 app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded());
-app.use("/api/v1", mainRouter);
+app.use("/api", mainRouter);
 
 app.listen(PORT, () => {
     console.log(`Server is Running at ${PORT}`);
