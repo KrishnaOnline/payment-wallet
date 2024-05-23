@@ -144,7 +144,9 @@ exports.getBySearch = async (req, res) => {
 
 exports.getBalance = async (req, res) => {
     try {
-        const account = await Account.findById(req.userID);
+        const account = await Account.findOne({
+            user: req.userID,
+        });
         console.log(account);
         res.status(200).json({
             success: true,
