@@ -5,12 +5,14 @@ import Login from "./components/Login";
 import Dashboard from "./components/Dashboard";
 import Transfer from "./components/Transfer";
 import { Toaster } from "react-hot-toast";
+import Navbar from "./components/Navbar";
 
 function App() {
     
 	return (
 		<div>
             <BrowserRouter>
+                <Navbar/>
                 <Routes>
                     <Route path="/signup" element={<Signup/>}/>
                     <Route path="/" element={<Login/>}/>

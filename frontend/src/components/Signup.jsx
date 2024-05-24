@@ -4,12 +4,14 @@ import { useNavigate } from "react-router-dom";
 
 function Signup() {
     const [user, setUser] = useState({});
-    // const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
     const handleSubmit = async () => {
         console.log(user);
+        setLoading(true);
         await signUp(user, navigate);
+        setLoading(false);
     }
 
 	return (
@@ -62,7 +64,7 @@ function Signup() {
                 <div>
                     <label htmlFor="password">Password</label>
                     <input
-                        placeholder="Enter Full Name"
+                        placeholder="Enter Password"
                         name="password"
                         id="password"
                         type="password"
@@ -74,7 +76,9 @@ function Signup() {
             <button
                 onClick={handleSubmit}
             >
-                SignUp
+                {
+                    loading ? <p>Signing Up...</p> : <p>SignUp</p>
+                }
             </button>
         </div>
     );

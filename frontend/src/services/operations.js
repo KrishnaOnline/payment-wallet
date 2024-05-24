@@ -28,7 +28,19 @@ export const login = async (data, navigate) => {
         navigate("/dashboard");
     } catch(err) {
         console.log(err);
+        // localStorage.setItem("token", null);
         toast.error(err?.response.data.message);
         navigate("/login");
+    }
+}
+
+export const logout = async (navigate) => {
+    try {
+        localStorage.removeItem("token");
+        toast.success("Logged Out");
+        navigate("/login");
+    } catch(err) {
+        console.log(err);
+        toast.error(err?.message);
     }
 }
