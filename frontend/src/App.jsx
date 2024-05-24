@@ -4,6 +4,7 @@ import Signup from "./components/Signup";
 import Login from "./components/Login";
 import Dashboard from "./components/Dashboard";
 import Transfer from "./components/Transfer";
+import { Toaster } from "react-hot-toast";
 
 function App() {
     
@@ -17,6 +18,7 @@ function App() {
                     <Route path="/transfer" element={<Transfer/>}/>
                 </Routes>
             </BrowserRouter>
+            <Toaster/>
         </div>
 	);
 }
