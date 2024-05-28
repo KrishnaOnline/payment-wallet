@@ -126,7 +126,7 @@ exports.getUserDetails = async (req, res) => {
                                         path: 'account',
                                         select: 'balance',
                                     });
-        console.log(user);
+        // console.log(user);
         res.status(200).json({
             success: true,
             message: "Fetched User Details",

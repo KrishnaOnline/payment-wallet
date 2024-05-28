@@ -4,8 +4,9 @@ import { useNavigate } from "react-router-dom";
 
 function Navbar() {
     const token = localStorage.getItem("token");
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState({});
     const navigate = useNavigate();
+    const currURL = location.pathname;
 
     const getUser = async () => {
         const response = await getUserDetails(token);
@@ -17,7 +18,7 @@ function Navbar() {
     }
     useEffect(() => {
         getUser();
-    }, [token]);
+    }, [currURL]);
 
 	return (
         <div>

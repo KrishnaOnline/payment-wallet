@@ -8,8 +8,8 @@ function Transfer() {
     const {receiverID} = useParams();
     const navigate = useNavigate();
     console.log(user);
-    const [data, setData] = useState({});
-    setData(...data, {to: receiverID});
+    const [data, setData] = useState({to: receiverID});
+    // setData({...data, to: receiverID});
 
     const handleTransfer = async () => {
         await transferMoney(data, token, navigate);
@@ -22,9 +22,8 @@ function Transfer() {
             <div>
                 <input
                     placeholder="Enter Amount"
-                    onClick={handleTransfer}
                     // value={data.amount}
-                    onChange={(e) => setData(...data, {amount: e.target.value})}
+                    onChange={(e) => setData({...data, amount: e.target.value})}
                 />
                 <button onClick={handleTransfer}>Transfer</button>
             </div>
