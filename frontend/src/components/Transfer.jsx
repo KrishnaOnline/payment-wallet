@@ -9,10 +9,13 @@ function Transfer() {
     const navigate = useNavigate();
     console.log(user);
     const [data, setData] = useState({to: receiverID});
+    const [loading, setLoading] = useState(false);
     // setData({...data, to: receiverID});
 
     const handleTransfer = async () => {
+        setLoading(true);
         await transferMoney(data, token, navigate);
+        setLoading(false);
     }
     
 	return (
@@ -33,7 +36,11 @@ function Transfer() {
                 <button
                     className="p-2 px-3 w-full rounded-md hover:bg-slate-800 bg-black text-white mt-6 text-lg font-medium"
                     onClick={handleTransfer}
-                >Transfer</button>
+                >
+                    {
+                        loading ? "Sending..." : "Send Money"
+                    }
+                </button>
             </div>
         </div>
     );
