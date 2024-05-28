@@ -7,6 +7,13 @@ exports.transferMoney = async (req, res) => {
         const session = await mongoose.startSession();
         session.startTransaction();
         const {amount, to} = req.body;
+        if(!amount) {
+            await session.abortTransaction();
+            return res.status(400).json({
+                success: false,
+                message: "Please Enter Amount > 0",
+            })
+        }
         const fromAccount = await Account.findOne({user: req.userID})
                                          .session(session);
         if(!fromAccount || fromAccount.balance<amount) {

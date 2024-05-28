@@ -6,7 +6,7 @@ const { authZ } = require("../middlewares/auth.middleware");
 router.post("/signup", signUp);
 router.post("/login", logIn);
 router.get("/user-details", authZ, getUserDetails);
-router.get("/search-results", authZ, getBySearch);
+router.get("/search-results", getBySearch);
 router.get("/balance", authZ, getBalance);
 
 module.exports = router;

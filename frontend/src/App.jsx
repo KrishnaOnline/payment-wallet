@@ -19,10 +19,13 @@ function App() {
                 }
                 <Routes>
                     <Route path="/signup" element={<Signup/>}/>
-                    <Route path="/" element={<Login/>}/>
+                    {
+                        token ? <Route path="/" element={<Dashboard/>}/>
+                              : <Route path="/" element={<Login/>}/>
+                    }
                     <Route path="/login" element={<Login/>}/>
                     <Route path="/dashboard" element={<Dashboard/>}/>
-                    <Route path="/transfer" element={<Transfer/>}/>
+                    <Route path="/transfer/:receiverID" element={<Transfer/>}/>
                 </Routes>
             </BrowserRouter>
             <Toaster/>

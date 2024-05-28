@@ -149,12 +149,14 @@ exports.getBySearch = async (req, res) => {
                 name: {$regex: filter}
             }, {
                 mobileNo: {$regex: filter}
+            }, {
+                username: {$regex: filter}
             }]
         })
         res.status(200).json({
             success: true,
             message: "Users By Search",
-            users: users.map(user => ({
+            data: users.map(user => ({
                 name: user.name,
                 username: user.username,
                 mobileNo: user.mobileNo,
