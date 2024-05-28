@@ -18,28 +18,43 @@ function Dashboard() {
     }, []);
 
 	return (
-        <div>
+        <div className="p-5">
             <div>
+                <p className="text-3xl font-bold mt-4 mb-2">Your Balance: <span>₹{user.account.balance}</span></p>
+            </div>
+            <div className="flex items-center gap-1 mb-7">
                 <input
                     placeholder="Search Users"
                     id="users"
+                    className="text-lg border border-black w-full p-2 rounded mt-6"
                     onChange={(e) => setQuery(e.target.value)}
                 />
-                <button onClick={handleSearch}>Search</button>
+                <button
+                    onClick={handleSearch}
+                    className="p-2 px-3 rounded-md hover:bg-slate-800 bg-black text-white mt-6 text-lg font-medium"
+                >Search</button>
             </div>
-            <div>
+            <div className="">
                 {
+                    users.length 
+                    ? 
                     users?.map((u, index) => {
                         return u._id!==user._id && (
-                            <div key={index}>
-                                <Link to={`/transfer/${u._id}`}>
-                                    <div>
-                                        {u?.name}
-                                    </div>
-                                </Link>
+                            <div key={index} className="border p-3 rounded-lg px-5 shadow-md flex justify-between items-center text-xl">
+                                <div>
+                                    <p>► {u?.name}</p>
+                                    <p className="pl-3 text-base text-gray-500">Username: {u?.username}</p>
+                                </div>
+                                <div>
+                                    <Link to={`/transfer/${u._id}`} className="p-2 px-3 rounded-md hover:bg-slate-800 bg-black text-white mt-6 text-lg font-medium">
+                                        Transfer
+                                    </Link>
+                                </div>
                             </div>
                         )
                     })
+                    :
+                    <p>No Users Found</p>
                 }
             </div>
         </div>

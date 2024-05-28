@@ -12,19 +12,21 @@ function App() {
     console.log(token);
     
 	return (
-		<div>
+		<div className="">
             <BrowserRouter>
                 <Navbar/>
-                <Routes>
-                    <Route path="/signup" element={<Signup/>}/>
-                    {
-                        token ? <Route path="/" element={<Dashboard/>}/>
-                              : <Route path="/" element={<Login/>}/>
-                    }
-                    <Route path="/login" element={<Login/>}/>
-                    <Route path="/dashboard" element={<Dashboard/>}/>
-                    <Route path="/transfer/:receiverID" element={<Transfer/>}/>
-                </Routes>
+                <div className="max-w-[1280px] mx-auto">
+                    <Routes>
+                        <Route path="/signup" element={<Signup/>}/>
+                        {
+                            token ? <Route path="/" element={<Dashboard/>}/>
+                                  : <Route path="/" element={<Login/>}/>
+                        }
+                        <Route path="/login" element={<Login/>}/>
+                        <Route path="/dashboard" element={<Dashboard/>}/>
+                        <Route path="/transfer/:receiverID" element={<Transfer/>}/>
+                    </Routes>
+                </div>
             </BrowserRouter>
             <Toaster/>
         </div>

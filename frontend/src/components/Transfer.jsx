@@ -16,16 +16,24 @@ function Transfer() {
     }
     
 	return (
-        <div>
-            <p>Me: {user?._id}</p>
-            <p>Rec: {receiverID}</p>
-            <div>
-                <input
-                    placeholder="Enter Amount"
-                    // value={data.amount}
-                    onChange={(e) => setData({...data, amount: e.target.value})}
-                />
-                <button onClick={handleTransfer}>Transfer</button>
+        <div className="w-[400px] mx-auto border mt-12 py-5 rounded-2xl border-black shadow-xl flex justify-center translate-y-20 flex-col p-5">
+            <p className="text-center text-3xl font-bold mb-6">Transaction</p>
+            {/* <p>Me: {user?._id}</p>
+            <p>Rec: {receiverID}</p> */}
+            <div className="">
+                <div className="flex items-center">
+                    <p className="text-2xl mr-3">₹</p>
+                    <input
+                        placeholder="Enter Amount"
+                        // value={data.amount}
+                        className="text-lg border w-full p-2 rounded"
+                        onChange={(e) => setData({...data, amount: e.target.value})}
+                    />
+                </div>
+                <button
+                    className="p-2 px-3 w-full rounded-md hover:bg-slate-800 bg-black text-white mt-6 text-lg font-medium"
+                    onClick={handleTransfer}
+                >Transfer</button>
             </div>
         </div>
     );
