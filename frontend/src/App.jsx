@@ -14,9 +14,7 @@ function App() {
 	return (
 		<div>
             <BrowserRouter>
-                {
-                    token && (<Navbar/>)
-                }
+                <Navbar/>
                 <Routes>
                     <Route path="/signup" element={<Signup/>}/>
                     {

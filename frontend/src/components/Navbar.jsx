@@ -22,13 +22,18 @@ function Navbar() {
 
 	return (
         <div>
+            <div>
+                KwikPay
+            </div>
             {
-                token && (
+                token ? (
                     <div>
                         <p>{user?.name}</p>
                         <p>{user?.account?.balance}</p>
                         <button onClick={logoutHandler}>Logout</button>
                     </div>
+                ) : (
+                    <div></div>
                 )
             }
         </div>
