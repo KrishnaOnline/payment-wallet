@@ -9,9 +9,16 @@ require("dotenv").config();
 app.use(cors());
 app.use(express.json());
 
+app.use(
+    cors({
+        origin: ["https://payment-wallet-kv.vercel.app"],
+        credentials: true,
+    })
+);
+
 dbConnect();
 app.get("/", (req, res) => {
-    res.send(`Server is Up and Running...`);
+    res.json(`Server is Up and Running...`);
 })
 
 app.use("/api", mainRouter);
