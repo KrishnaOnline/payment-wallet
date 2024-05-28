@@ -15,9 +15,10 @@ app.use(
     })
 );
 
+dbConnect();
+
 app.use("/api", mainRouter);
 
-dbConnect();
 app.get("/", (req, res) => {
     return res.json({
         success: true,
