@@ -113,6 +113,34 @@ exports.logIn = async (req, res) => {
     }
 }
 
+exports.getUserDetails = async (req, res) => {
+    try {
+        if(!req.userID) {
+            return res.status(400).json({
+                success: false,
+                message: "Please enter UserID",
+            })
+        }
+        const user = await User.findById(req.userID)
+                                    .populate({
+                                        path: 'account',
+                                        select: 'balance',
+                                    });
+        console.log(user);
+        res.status(200).json({
+            success: true,
+            message: "Fetched User Details",
+            data: user,
+        })
+    } catch(err) {
+        console.log(err);
+        return res.status(500).json({
+            success: false,
+            message: err.message,
+        })
+    }
+}
+
 exports.getBySearch = async (req, res) => {
     try {
         const filter = req.query.filter || "";

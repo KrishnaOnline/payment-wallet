@@ -34,6 +34,22 @@ export const login = async (data, navigate) => {
     }
 }
 
+export const getUserDetails = async (token) => {
+    try {
+        const response = await apiConnector("GET", endPoints.USER_DETAILS_API, null, {
+            Authorization: `Bearer ${token}`,
+        });
+        if(!response.data.success) {
+            throw new Error(response.data.message);
+        }
+        console.log(response.data);
+        return response.data;
+    } catch(err) {
+        console.log(err);
+        throw new Error(err.message);
+    }
+}
+
 export const logout = async (navigate) => {
     try {
         localStorage.removeItem("token");

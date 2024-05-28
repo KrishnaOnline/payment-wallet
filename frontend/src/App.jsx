@@ -8,11 +8,15 @@ import { Toaster } from "react-hot-toast";
 import Navbar from "./components/Navbar";
 
 function App() {
+    const token = localStorage.getItem("token");
+    console.log(token);
     
 	return (
 		<div>
             <BrowserRouter>
-                <Navbar/>
+                {
+                    token && (<Navbar/>)
+                }
                 <Routes>
                     <Route path="/signup" element={<Signup/>}/>
                     <Route path="/" element={<Login/>}/>
