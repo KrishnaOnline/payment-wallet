@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { login } from "../services/operations";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Login() {
     const [user, setUser] = useState({});
@@ -52,6 +52,9 @@ function Login() {
                     loading ? <p>Logging In...</p> : <p>Login</p>
                 }
             </button>
+            <div className="text-base mt-5 text-center">
+                <p>Not Registered? <Link className="text-blue-600 underline" to={"/signup"}>SignUp</Link></p>
+            </div>
         </div>
     );
 }
