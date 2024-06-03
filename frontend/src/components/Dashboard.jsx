@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
-import { getSearchUsers } from "../services/operations";
+import { getSearchUsers, getUserDetails } from "../services/operations";
 import { Link } from "react-router-dom";
 
 function Dashboard() {
+    const currUrl = location.pathname;
     const token = localStorage.getItem("token");
-    const user = JSON.parse(localStorage.getItem("user"));
+    // const user = JSON.parse(localStorage.getItem("user"));
+    const [user, setUser] = useState({});
     console.log("Token from Dahsboard:", token);
     const [users, setUsers] = useState([]);
     const [query, setQuery] = useState(null);
@@ -13,14 +15,22 @@ function Dashboard() {
         console.log("Search Users Response: ", response?.data);
         setUsers(response?.data);
     }
+    const getUser = async () => {
+        const response = await getUserDetails(token);
+        console.log(response);
+        setUser(response?.data);
+    }
     useEffect(() => {
         handleSearch(token);
     }, []);
+    useEffect(() => {
+        getUser();
+    }, [currUrl])
 
 	return (
         <div className="p-5">
             <div>
-                <p className="text-3xl font-bold mt-4 mb-2">Your Balance: <span>₹{user.account.balance}</span></p>
+                <p className="text-3xl font-bold mt-4 mb-2">Your Balance: <span>₹{user?.account?.balance}</span></p>
             </div>
             <div className="flex items-center gap-1 mb-7">
                 <input
