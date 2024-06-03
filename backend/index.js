@@ -1,19 +1,24 @@
 const express = require("express");
 const dbConnect = require("./config/dbConnect");
 const app = express();
-const PORT = process.env.PORT || 3000;
 const mainRouter = require("./routes/index");
 const cors = require("cors");
+const bodyParser = require("body-parser");
 require("dotenv").config();
+const PORT = process.env.PORT || 3000;
 
-// app.use(cors());
-app.use(express.json());
-app.use(
-    cors({
-        origin: "https://payment-wallet-kv.vercel.app",
-        credentials: true,
-    })
-);
+app.use(cors());
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
+// app.use(express.json());
+// app.use(express.urlencoded({extended: true}));
+// app.use(
+//     cors({
+//         origin: "https://payment-wallet-kv.vercel.app",
+//         credentials: true,
+//     })
+// );
 
 dbConnect();
 
